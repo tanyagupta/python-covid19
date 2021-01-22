@@ -1,0 +1,41 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "covid facts",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "GetNewFactIntent",
+          "samples": [
+            "a fact",
+            "a COVID fact",
+            "tell me a fact",
+            "tell me a COVID fact",
+            "give me a fact",
+            "give me a COVID fact",
+            "tell me trivia",
+            "tell me a COVID trivia",
+            "give me trivia",
+            "give me a COVID trivia",
+            "give me some information",
+            "give me some COVID information",
+            "tell me something",
+            "give me something"
+          ],
+          "slots": []
+        }
+      ]
+    }
+  }
+}
