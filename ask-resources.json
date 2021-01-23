@@ -8,12 +8,6 @@
       "code": {
         "default": {
           "src": "./lambda"
-        },
-        "EU": {
-          "src": "./lambda"
-        },
-        "FE": {
-          "src": "./lambda"
         }
       },
       "skillInfrastructure": {

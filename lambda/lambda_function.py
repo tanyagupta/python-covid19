@@ -69,9 +69,9 @@ class GetNewFactHandler(AbstractRequestHandler):
 
         #speech = json.dumps(covid_data)
         #fact = result['results'][0][0]
-
+        summary = date+ "the US has "+str(covid_data["positive"])+" positive COVID-19 cases"
         handler_input.response_builder.speak(text).set_card(
-            SimpleCard(SKILL_NAME, text))
+            SimpleCard(SKILL_NAME, summary))
         return handler_input.response_builder.response
 
 
