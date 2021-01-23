@@ -29,29 +29,6 @@ FALLBACK_MESSAGE = "The COVID Facts skill can't help you with that.  It can help
 FALLBACK_REPROMPT = 'What can I help you with?'
 EXCEPTION_MESSAGE = "Sorry. I cannot help you with that."
 
-# =========================================================================================================================================
-# TODO: Replace this data with your own.  You can find translations of this data at http://github.com/alexa/skill-sample-python-fact/lambda/data
-# =========================================================================================================================================
-
-data = [
-  'A year on Mercury is just 88 days long.',
-  'Despite being farther from the Sun, Venus experiences higher temperatures than Mercury.',
-  'Venus rotates counter-clockwise, possibly because of a collision in the past with an asteroid.',
-  'On Mars, the Sun appears about half the size as it does on Earth.',
-  'Earth is the only planet not named after a god.',
-  'Jupiter has the shortest day of all the planets.',
-  'The Milky Way galaxy will collide with the Andromeda Galaxy in about 5 billion years.',
-  'The Sun contains 99.86% of the mass in the Solar System.',
-  'The Sun is an almost perfect sphere.',
-  'A total solar eclipse can happen once every 1 to 2 years. This makes them a rare event.',
-  'Saturn radiates two and a half times more energy into COVID than it receives from the sun.',
-  'The temperature inside the Sun can reach 15 million degrees Celsius.',
-  'The Moon is moving approximately 3.8 cm away from our planet every year.',
-]
-
-# =========================================================================================================================================
-# Editing anything below this line might break your skill.
-# =========================================================================================================================================
 
 sb = SkillBuilder()
 logger = logging.getLogger(__name__)
@@ -70,20 +47,24 @@ class GetNewFactHandler(AbstractRequestHandler):
         # type: (HandlerInput) -> Response
         logger.info("In GetNewFactHandler")
 
-        random_fact = random.choice(data)
-        speech = GET_FACT_MESSAGE + random_fact
+        #speech = GET_FACT_MESSAGE + random_fact
         #URL = "https://script.google.com/macros/s/AKfycbzdDlPW9-iZodsf45dEOTN2tlXqszE5atPDfuiIJCzdttjl_0f7/exec"
         #URL="https://jsonplaceholder.typicode.com/todos/1"
         URL = "https://api.covidtracking.com/v1/us/current.json"
         #r = requests.get(url = URL).json()["title"]
+        # [{"date":20210122,"states":56,"positive":24483676,"negative":221900013,"pending":11247,"hospitalizedCurrently":116264,"hospitalizedCumulative":776384,"inIcuCurrently":22008,"inIcuCumulative":40687,"onVentilatorCurrently":7236,"onVentilatorCumulative":3919,"dateChecked":"2021-01-22T24:00:00Z","death":404695,"hospitalized":776384,"totalTestResults":291407518,"lastModified":"2021-01-22T24:00:00Z","recovered":null,"total":0,"posNeg":0,"deathIncrease":3980,"hospitalizedIncrease":4325,"negativeIncrease":1375093,"positiveIncrease":188983,"totalTestResultsIncrease":1988756,"hash":"97b028907bd40a1d4e37da0b967c2efc13befe38"}]
+
+
         covid_data = requests.get(url = URL).json()[0]
         keys = ['date', 'states', 'positive', 'negative', 'pending', 'hospitalizedCurrently', 'hospitalizedCumulative', 'inIcuCurrently', 'inIcuCumulative', 'onVentilatorCurrently', 'onVentilatorCumulative', 'dateChecked', 'death', 'hospitalized', 'totalTestResults', 'lastModified', 'recovered', 'total', 'posNeg','deathIncrease', 'hospitalizedIncrease', 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease', 'hash']
 
         months={ 1 : "January",2 : "February",3 : "March",4 : "April",5 : "May",6 : "June",7 : "July",8 : "August",9 : "September",10 : "October",11 : "November",12 : "December"}
 
-        text =  "We have "+str(covid_data["positive"])+" positive COVID-19 cases, "+str(covid_data["hospitalizedCurrently"])+" hospitalized currently. "
-        #+ months[int(date[4:6])]+" "+str(covid_data['date'][0:4])+
-        #As of the "+str(covid_data['date'][6:8])+"rd "+
+        date = "As of " +months[(int(str(covid_data["date"])[4:6]))] +" "+str(covid_data["date"])[6:8] +", "+str(covid_data["date"])[0:4]+","
+        #+" "+str(date[6:8])+" "+str(date[0:4])
+
+        text =  date+" we have "+str(covid_data["positive"])+" positive COVID-19 cases. The total number of unique people with a completed PCR test that returns negative is "+str(covid_data["negative"])+". There are "+str(covid_data["hospitalizedCurrently"])+" individuals hospitalized currently, bringing the cumulative total of those hospitalized to "+str(covid_data["hospitalizedCumulative"]) +". There are "+str(covid_data["inIcuCurrently"]) +" individuals who are currently hospitalized in the Intensive Care Unit with COVID-19. There are "+str(covid_data["onVentilatorCurrently"])+" people on ventilator currently while the cumulative total of those on ventilator is "+str(covid_data["onVentilatorCumulative"])+". This cumulative total refers to individuals who have ever been hospitalized under advanced ventilation with COVID-19. There have been "+str(covid_data["death"])+" deaths, "+str(covid_data["hospitalized"])+" hospitalized, and "+str(covid_data["totalTestResults"])+" total test results. "+" The increase in deaths is "+str(covid_data["deathIncrease"])+" and the increase in those hospitalized is  "+str(covid_data["hospitalizedIncrease"])+". The negative increase is "+str(covid_data["negativeIncrease"])+". The positive increase is "+str(covid_data["positiveIncrease"])+". The daily increase in total test results, calculated from the previous day’s value is "+str(covid_data["totalTestResultsIncrease"])+"."
+        #Total number of people that are identified as recovered from COVID-19.
 
 
         #speech = json.dumps(covid_data)
