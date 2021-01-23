@@ -2,82 +2,26 @@
   "manifest": {
     "publishingInformation": {
       "locales": {
-        "en-AU": {
-          "summary": "Learn facts about COVID.",
+        "en-US": {
+          "summary": "Get the latest US data on COVID.",
           "examplePhrases": [
             "Alexa open COVID facts",
-            "Alexa ask COVID facts for a fact",
-            "Alexa tell COVID facts to tell me a fact"
-          ],
-          "keywords": [
-            "COVID",
-            "facts",
-            "trivia"
-          ],
-          "name": "COVID Facts",
-          "description": "Ask for COVID Facts, and learn about what really matters, like dark matter.\n\nCOVID Facts provides fun the whole family can enjoy and is guaranteed to make you smarter.\n\nTo start, just say \"Alexa, launch COVID Facts\" or \"Alexa, open COVID Facts\" to get a fact\".\n\nAt anytime, you can stop by saying \"Alexa, stop\""
-        },
-        "en-CA": {
-          "summary": "Learn fun facts about COVID.",
-          "examplePhrases": [
-            "Alexa open COVID facts",
-            "Alexa ask COVID facts for a fact",
-            "Alexa tell COVID facts to tell me trivia"
-          ],
-          "keywords": [
-            "COVID",
-            "facts",
-            "trivia"
-          ],
-          "name": "COVID Facts",
-          "description": "Ask for COVID Facts, and learn about what really matters, like dark matter.\n\nCOVID Facts provides fun the whole family can enjoy and is guaranteed to make you smarter.\n\nTo start, just say \"Alexa, launch COVID Facts\" or \"Alexa, open COVID Facts\" to get a fact\".\n\nAt anytime, you can stop by saying \"Alexa, stop\""
-        },
-        "en-GB": {
-          "summary": "Learn fun facts about COVID.",
-          "examplePhrases": [
-            "Alexa open COVID facts",
-            "Alexa ask COVID facts for a fact",
-            "Alexa tell COVID facts to tell me trivia"
+            "Alexa ask COVID facts for a fact"
           ],
           "keywords": [
             "COVID",
             "facts"
           ],
-          "name": "COVID Facts",
-          "description": "Ask for COVID Facts, and learn about what really matters, like dark matter.\n\nCOVID Facts provides fun the whole family can enjoy and is guaranteed to make you smarter.\n\nTo start, just say \"Alexa, launch COVID Facts\" or \"Alexa, open COVID Facts\" to get a fact\".\n\nAt anytime, you can stop by saying \"Alexa, stop\""
-        },
-        "en-IN": {
-          "summary": "Learn fun facts about COVID.",
-          "examplePhrases": [
-            "Alexa open COVID facts",
-            "Alexa ask COVID facts for a fact",
-            "Alexa tell COVID facts to tell me trivia"
-          ],
-          "keywords": [
-            "COVID",
-            "facts",
-            "trivia"
-          ],
-          "name": "COVID Facts",
-          "description": "Ask for COVID Facts, and learn about what really matters, like dark matter.\n\nCOVID Facts provides fun the whole family can enjoy and is guaranteed to make you smarter.\n\nTo start, just say \"Alexa, launch COVID Facts\" or \"Alexa, open COVID Facts\" to get a fact\".\n\nAt anytime, you can stop by saying \"Alexa, stop\""
-        },
-        "en-US": {
-          "summary": "Learn fun facts about COVID.",
-          "examplePhrases": [
-            "Alexa open COVID facts",
-            "Alexa ask COVID facts for a fact",
-            "Alexa tell COVID facts to tell me trivia"
-          ],
-          "keywords": [
-            "COVID",
-            "facts",
-            "trivia"
-          ],
-          "name": "python-COVID",
-          "description": "Ask for COVID Facts, and learn about what really matters, like dark matter.\n\nCOVID Facts provides fun the whole family can enjoy and is guaranteed to make you smarter.\n\nTo start, just say \"Alexa, launch COVID Facts\" or \"Alexa, open COVID Facts\" to get a fact\".\n\nAt anytime, you can stop by saying \"Alexa, stop\""
+          "name": "Daily US COVID data",
+          "smallIconUri": "https://raw.githubusercontent.com/tanyagupta/nytnewsflash/main/skill-package/assets/icon_108_A2Z.png",
+          "largeIconUri": "https://raw.githubusercontent.com/tanyagupta/nytnewsflash/main/skill-package/assets/icon_512_A2Z.png",
+          "description": "Ask for COVID Facts, and get the latest data about COVID.\n\nTo start, just say \"Alexa, launch COVID Facts\" or \"Alexa, open COVID Facts\" to get a fact\".\n\nAt anytime, you can stop by saying \"Alexa, stop\". The data is sourced from The COVID Tracking Project at The Atlantic"
         }
       },
-      "category": "KNOWLEDGE_AND_TRIVIA"
+      "isAvailableWorldwide": true,
+      "testingInstructions": "Start by saying Alexa open COVID facts",
+      "category": "KNOWLEDGE_AND_TRIVIA",
+      "distributionCountries": []
     },
     "apis": {
       "custom": {
@@ -85,19 +29,32 @@
           "uri": "arn:aws:lambda:us-east-1:975742344863:function:ask-python-covid-default-default-1611341996093"
         },
         "regions": {
-          "FE": {
-            "endpoint": {
-              "uri": "arn:aws:lambda:us-west-2:975742344863:function:ask-python-covid-default-FE-1611341997153"
-            }
-          },
           "EU": {
             "endpoint": {
               "uri": "arn:aws:lambda:eu-west-1:975742344863:function:ask-python-covid-default-EU-1611341997873"
+            }
+          },
+          "FE": {
+            "endpoint": {
+              "uri": "arn:aws:lambda:us-west-2:975742344863:function:ask-python-covid-default-FE-1611341997153"
             }
           }
         }
       }
     },
-    "manifestVersion": "1.0"
+    "manifestVersion": "1.0",
+    "privacyAndCompliance": {
+      "locales": {
+        "en-US": {
+          "privacyPolicyUrl": "http://learnin60seconds.com/tos",
+          "termsOfUseUrl": "http://learnin60seconds.com/tos"
+        }
+      },
+      "allowsPurchases": false,
+      "usesPersonalInfo": false,
+      "isChildDirected": false,
+      "isExportCompliant": true,
+      "containsAds": false
+    }
   }
 }
