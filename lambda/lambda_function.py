@@ -5,6 +5,8 @@ import random
 import logging
 import requests
 import datetime
+import requests
+import json
 
 from ask_sdk_core.skill_builder import SkillBuilder
 from ask_sdk_core.dispatch_components import (
@@ -50,28 +52,30 @@ class GetNewFactHandler(AbstractRequestHandler):
         #speech = GET_FACT_MESSAGE + random_fact
         #URL = "https://script.google.com/macros/s/AKfycbzdDlPW9-iZodsf45dEOTN2tlXqszE5atPDfuiIJCzdttjl_0f7/exec"
         #URL="https://jsonplaceholder.typicode.com/todos/1"
-        URL = "https://api.covidtracking.com/v1/us/current.json"
+        #URL = "https://api.covidtracking.com/v1/us/current.json"
         #r = requests.get(url = URL).json()["title"]
         # [{"date":20210122,"states":56,"positive":24483676,"negative":221900013,"pending":11247,"hospitalizedCurrently":116264,"hospitalizedCumulative":776384,"inIcuCurrently":22008,"inIcuCumulative":40687,"onVentilatorCurrently":7236,"onVentilatorCumulative":3919,"dateChecked":"2021-01-22T24:00:00Z","death":404695,"hospitalized":776384,"totalTestResults":291407518,"lastModified":"2021-01-22T24:00:00Z","recovered":null,"total":0,"posNeg":0,"deathIncrease":3980,"hospitalizedIncrease":4325,"negativeIncrease":1375093,"positiveIncrease":188983,"totalTestResultsIncrease":1988756,"hash":"97b028907bd40a1d4e37da0b967c2efc13befe38"}]
+        url="https://script.google.com/macros/s/AKfycbzJr6kWPBZF5Kpi7cOkCAvrdJd6BWYCZTRCP5uACff2_nCor_FY/exec"
+        trending_data=requests.get(url)
+        trend_list = json.loads(trending_data.text)
+        #print(trending_data[0])
+        #covid_data = requests.get(url = URL).json()[0]
+        #keys = ['date', 'states', 'positive', 'negative', 'pending', 'hospitalizedCurrently', 'hospitalizedCumulative', 'inIcuCurrently', 'inIcuCumulative', 'onVentilatorCurrently', 'onVentilatorCumulative', 'dateChecked', 'death', 'hospitalized', 'totalTestResults', 'lastModified', 'recovered', 'total', 'posNeg','deathIncrease', 'hospitalizedIncrease', 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease', 'hash']
 
+        #months={ 1 : "January",2 : "February",3 : "March",4 : "April",5 : "May",6 : "June",7 : "July",8 : "August",9 : "September",10 : "October",11 : "November",12 : "December"}
 
-        covid_data = requests.get(url = URL).json()[0]
-        keys = ['date', 'states', 'positive', 'negative', 'pending', 'hospitalizedCurrently', 'hospitalizedCumulative', 'inIcuCurrently', 'inIcuCumulative', 'onVentilatorCurrently', 'onVentilatorCumulative', 'dateChecked', 'death', 'hospitalized', 'totalTestResults', 'lastModified', 'recovered', 'total', 'posNeg','deathIncrease', 'hospitalizedIncrease', 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease', 'hash']
-
-        months={ 1 : "January",2 : "February",3 : "March",4 : "April",5 : "May",6 : "June",7 : "July",8 : "August",9 : "September",10 : "October",11 : "November",12 : "December"}
-
-        date = "As of " +months[(int(str(covid_data["date"])[4:6]))] +" "+str(covid_data["date"])[6:8] +", "+str(covid_data["date"])[0:4]+","
+        #date = "As of " +months[(int(str(covid_data["date"])[4:6]))] +" "+str(covid_data["date"])[6:8] +", "+str(covid_data["date"])[0:4]+","
         #+" "+str(date[6:8])+" "+str(date[0:4])
 
-        text =  date+" we have "+str(covid_data["positive"])+" positive COVID-19 cases. The total number of unique people with a completed PCR test that returns negative is "+str(covid_data["negative"])+". There are "+str(covid_data["hospitalizedCurrently"])+" individuals hospitalized currently, bringing the cumulative total of those hospitalized to "+str(covid_data["hospitalizedCumulative"]) +". There are "+str(covid_data["inIcuCurrently"]) +" individuals who are currently hospitalized in the Intensive Care Unit with COVID-19. There are "+str(covid_data["onVentilatorCurrently"])+" people on ventilator currently while the cumulative total of those on ventilator is "+str(covid_data["onVentilatorCumulative"])+". This cumulative total refers to individuals who have ever been hospitalized under advanced ventilation with COVID-19. There have been "+str(covid_data["death"])+" deaths, "+str(covid_data["hospitalized"])+" hospitalized, and "+str(covid_data["totalTestResults"])+" total test results. "+" The increase in deaths is "+str(covid_data["deathIncrease"])+" and the increase in those hospitalized is  "+str(covid_data["hospitalizedIncrease"])+". The negative increase is "+str(covid_data["negativeIncrease"])+". The positive increase is "+str(covid_data["positiveIncrease"])+". The daily increase in total test results, calculated from the previous day’s value is "+str(covid_data["totalTestResultsIncrease"])+"."
+        #text =  date+" we have "+str(covid_data["positive"])+" positive COVID-19 cases. The total number of unique people with a completed PCR test that returns negative is "+str(covid_data["negative"])+". There are "+str(covid_data["hospitalizedCurrently"])+" individuals hospitalized currently, bringing the cumulative total of those hospitalized to "+str(covid_data["hospitalizedCumulative"]) +". There are "+str(covid_data["inIcuCurrently"]) +" individuals who are currently hospitalized in the Intensive Care Unit with COVID-19. There are "+str(covid_data["onVentilatorCurrently"])+" people on ventilator currently while the cumulative total of those on ventilator is "+str(covid_data["onVentilatorCumulative"])+". This cumulative total refers to individuals who have ever been hospitalized under advanced ventilation with COVID-19. There have been "+str(covid_data["death"])+" deaths, "+str(covid_data["hospitalized"])+" hospitalized, and "+str(covid_data["totalTestResults"])+" total test results. "+" The increase in deaths is "+str(covid_data["deathIncrease"])+" and the increase in those hospitalized is  "+str(covid_data["hospitalizedIncrease"])+". The negative increase is "+str(covid_data["negativeIncrease"])+". The positive increase is "+str(covid_data["positiveIncrease"])+". The daily increase in total test results, calculated from the previous day’s value is "+str(covid_data["totalTestResultsIncrease"])+"."
         #Total number of people that are identified as recovered from COVID-19.
 
-
+        x=trend_list[0][0]
         #speech = json.dumps(covid_data)
         #fact = result['results'][0][0]
-        summary = date+ "the US has "+str(covid_data["positive"])+" positive COVID-19 cases"
-        handler_input.response_builder.speak(text).set_card(
-            SimpleCard(SKILL_NAME, summary))
+        #summary = date+ "the US has "+str(covid_data["positive"])+" positive COVID-19 cases"
+        handler_input.response_builder.speak(x).set_card(
+            SimpleCard(SKILL_NAME, x))
         return handler_input.response_builder.response
 
 
