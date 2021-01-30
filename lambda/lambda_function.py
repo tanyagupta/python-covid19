@@ -55,10 +55,11 @@ class GetNewFactHandler(AbstractRequestHandler):
 
         response="The trending items are "
         for item in trend_list:
-            response=response+str(item[0])+","
+            response=response+str(item[0])+":"+str(item[8])+";"
 
+        display = str(item[0])+" "+str(item[1])+" "+str(item[2])+" "+str(item[3])+" "+str(item[4])
         handler_input.response_builder.speak(response).set_card(
-            SimpleCard(SKILL_NAME, "hello"))
+            SimpleCard(SKILL_NAME, display))
         return handler_input.response_builder.response
 
 
