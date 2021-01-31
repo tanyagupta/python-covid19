@@ -59,7 +59,7 @@ class GetNewFactHandler(AbstractRequestHandler):
             response=response+str(item[0])+"<break time='1s'/>"+", "
 
         display = str(trend_list[0][0])+", "+str(trend_list[1][0])+", "+str(trend_list[2][0])+", "+str(trend_list[3][0])+", "+str(trend_list[4][0])
-        #sessionAttributes.lastSpeech = display
+        #session_attributes['speech'] = response
         handler_input.response_builder.speak(response).set_card(
             SimpleCard(SKILL_NAME, display))
         return handler_input.response_builder.response
@@ -167,23 +167,22 @@ class ResponseLogger(AbstractResponseInterceptor):
         logger.debug("Alexa Response: {}".format(response))
 
 
-# class RepeatLogger(AbstractResponseInterceptor):
-#     def handle_repeat_request(intent, session):
-#         """
-#         Repeat the previous speech_output and reprompt_text from the session['attributes'].
-#         If available, else start a new game session.
-#         """
-#         if 'attributes' not in session or 'speech_output' not in session['attributes']:
-#             return handle()
-#         else:
-#             attributes = session['attributes']
-#             speech_output = attributes['speech_output']
-#             reprompt_text = attributes['reprompt_text']
-#             should_end_session = False
-#             return build_response(
-#                 attributes,
-#                 build_speechlet_response_without_card(speech_output, HELP_REPROMPT, HELP_MESSAGE)
-#             )
+class RepeatIntentHandler(AbstractRequestHandler):
+    """Handler for Repeat Intent."""
+    def can_handle(self, handler_input):
+        # type: (HandlerInput) -> bool
+        return is_intent_name("AMAZON.RepeatIntent")(handler_input)
+
+    def handle(self, handler_input):
+        # type: (HandlerInput) -> Response
+        logger.info("In RepeatIntentHandler")
+        _ = handler_input.attributes_manager.request_attributes["_"]
+
+        session_attributes = handler_input.attributes_manager.session_attributes
+        handler_input.response_builder.speak(
+            session_attributes['speech']).ask(
+            session_attributes['reprompt'])
+        return handler_input.response_builder.response
 
 
 
@@ -194,6 +193,7 @@ sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelOrStopIntentHandler())
 sb.add_request_handler(FallbackIntentHandler())
 sb.add_request_handler(SessionEndedRequestHandler())
+sb.add_request_handler(RepeatIntentHandler())
 
 # Register exception handlers
 sb.add_exception_handler(CatchAllExceptionHandler())
