@@ -59,6 +59,7 @@ class GetNewFactHandler(AbstractRequestHandler):
             response=response+str(item[0])+"<break time='1s'/>"+", "
 
         display = str(trend_list[0][0])+", "+str(trend_list[1][0])+", "+str(trend_list[2][0])+", "+str(trend_list[3][0])+", "+str(trend_list[4][0])
+        attr = handler_input.attributes_manager.session_attributes
         #session_attributes['speech'] = response
         handler_input.response_builder.speak(response).set_card(
             SimpleCard(SKILL_NAME, display))
@@ -130,6 +131,20 @@ class SessionEndedRequestHandler(AbstractRequestHandler):
             handler_input.request_envelope.request.reason))
         return handler_input.response_builder.response
 
+# Interceptor classes
+class CacheResponseForRepeatInterceptor(AbstractResponseInterceptor):
+    """Cache the response sent to the user in session.
+    The interceptor is used to cache the handler response that is
+    being sent to the user. This can be used to repeat the response
+    back to the user, in case a RepeatIntent is being used and the
+    skill developer wants to repeat the same information back to
+    the user.
+    """
+    def process(self, handler_input, response):
+        # type: (HandlerInput, Response) -> None
+        session_attr = handler_input.attributes_manager.session_attributes
+        session_attr["recent_response"] = response
+
 
 # Exception Handler
 class CatchAllExceptionHandler(AbstractExceptionHandler):
@@ -137,6 +152,7 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
     respond with custom message.
     """
     def can_handle(self, handler_input, exception):
+        logger.info("in CatchAllExceptionHandler")
         # type: (HandlerInput, Exception) -> bool
         return True
 
@@ -176,13 +192,17 @@ class RepeatIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         logger.info("In RepeatIntentHandler")
-        _ = handler_input.attributes_manager.request_attributes["_"]
+        attr = handler_input.attributes_manager.session_attributes
+        response_builder = handler_input.response_builder
+        if "recent_response" in attr:
+            cached_response_str = json.dumps(attr["recent_response"])
+            cached_response = DefaultSerializer().deserialize(
+                cached_response_str, Response)
+            return cached_response
+        else:
+            response_builder.speak(FALLBACK_MESSAGE).ask(HELP_MESSAGE)
 
-        session_attributes = handler_input.attributes_manager.session_attributes
-        handler_input.response_builder.speak(
-            session_attributes['speech']).ask(
-            session_attributes['reprompt'])
-        return handler_input.response_builder.response
+            return response_builder.response
 
 
 
@@ -199,6 +219,7 @@ sb.add_request_handler(RepeatIntentHandler())
 sb.add_exception_handler(CatchAllExceptionHandler())
 
 # TODO: Uncomment the following lines of code for request, response logs.
+sb.add_global_response_interceptor(CacheResponseForRepeatInterceptor())
 sb.add_global_request_interceptor(RequestLogger())
 sb.add_global_response_interceptor(ResponseLogger())
 
