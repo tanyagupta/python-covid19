@@ -7,6 +7,7 @@ import requests
 import datetime
 import requests
 import json
+import html
 
 from ask_sdk_core.skill_builder import SkillBuilder
 from ask_sdk_core.dispatch_components import (
@@ -22,12 +23,12 @@ from ask_sdk_model import Response
 # =========================================================================================================================================
 # TODO: The items below this comment need your attention.
 # =========================================================================================================================================
-SKILL_NAME = "COVID Facts"
-GET_FACT_MESSAGE = "Here's your fact: "
-HELP_MESSAGE = "You can say tell me a COVID fact, or, you can say exit... What can I help you with?"
+SKILL_NAME = "Trending topics"
+GET_FACT_MESSAGE = "Here's your trending topic: "
+HELP_MESSAGE = "You can say tell me tell me about trendng topics, or, you can say exit... What can I help you with?"
 HELP_REPROMPT = "What can I help you with?"
-STOP_MESSAGE = "Goodbye!"
-FALLBACK_MESSAGE = "The COVID Facts skill can't help you with that.  It can help you discover facts about COVID if you say tell me a COVID fact. What can I help you with?"
+STOP_MESSAGE = "Goodbye! Thank you for listening to trending topics by Learn in 60 seconds"
+FALLBACK_MESSAGE = "The Trending Topics skill can't help you with that.  It can help you discover trending topics if you say tell me about trending topics. What can I help you with?"
 FALLBACK_REPROMPT = 'What can I help you with?'
 EXCEPTION_MESSAGE = "Sorry. I cannot help you with that."
 
@@ -53,11 +54,12 @@ class GetNewFactHandler(AbstractRequestHandler):
         trending_data=requests.get(url)
         trend_list = json.loads(trending_data.text)
 
-        response="The trending items are "
+        response="The trending topics are "
         for item in trend_list:
-            response=response+str(item[0])+":"+str(item[8])+";"
+            response=response+str(item[0])+"<break time='1s'/>"+", "
 
-        display = str(item[0])+" "+str(item[1])+" "+str(item[2])+" "+str(item[3])+" "+str(item[4])
+        display = str(trend_list[0][0])+", "+str(trend_list[1][0])+", "+str(trend_list[2][0])+", "+str(trend_list[3][0])+", "+str(trend_list[4][0])
+        #sessionAttributes.lastSpeech = display
         handler_input.response_builder.speak(response).set_card(
             SimpleCard(SKILL_NAME, display))
         return handler_input.response_builder.response
@@ -163,6 +165,27 @@ class ResponseLogger(AbstractResponseInterceptor):
     def process(self, handler_input, response):
         # type: (HandlerInput, Response) -> None
         logger.debug("Alexa Response: {}".format(response))
+
+
+# class RepeatLogger(AbstractResponseInterceptor):
+#     def handle_repeat_request(intent, session):
+#         """
+#         Repeat the previous speech_output and reprompt_text from the session['attributes'].
+#         If available, else start a new game session.
+#         """
+#         if 'attributes' not in session or 'speech_output' not in session['attributes']:
+#             return handle()
+#         else:
+#             attributes = session['attributes']
+#             speech_output = attributes['speech_output']
+#             reprompt_text = attributes['reprompt_text']
+#             should_end_session = False
+#             return build_response(
+#                 attributes,
+#                 build_speechlet_response_without_card(speech_output, HELP_REPROMPT, HELP_MESSAGE)
+#             )
+
+
 
 
 # Register intent handlers
