@@ -50,6 +50,12 @@ class GetNewFactHandler(AbstractRequestHandler):
         # type: (HandlerInput) -> Response
         logger.info("In GetNewFactHandler")
 
+
+        session_attributes = handler_input.attributes_manager.session_attributes
+
+
+
+
         url="https://script.google.com/macros/s/AKfycbzJr6kWPBZF5Kpi7cOkCAvrdJd6BWYCZTRCP5uACff2_nCor_FY/exec"
         trending_data=requests.get(url)
         trend_list = json.loads(trending_data.text)
@@ -58,11 +64,19 @@ class GetNewFactHandler(AbstractRequestHandler):
         for item in trend_list:
             response=response+str(item[0])+"<break time='1s'/>"+", "
 
+
         display = str(trend_list[0][0])+", "+str(trend_list[1][0])+", "+str(trend_list[2][0])+", "+str(trend_list[3][0])+", "+str(trend_list[4][0])
-        attr = handler_input.attributes_manager.session_attributes
-        #session_attributes['speech'] = response
+
+        session_attributes = handler_input.attributes_manager.session_attributes
+
+        session_attributes["trending"]=response
+
+
+
+        reprompt="hello?"
+
         handler_input.response_builder.speak(response).set_card(
-            SimpleCard(SKILL_NAME, display))
+            SimpleCard(SKILL_NAME, display)).ask(reprompt)
         return handler_input.response_builder.response
 
 
@@ -132,18 +146,6 @@ class SessionEndedRequestHandler(AbstractRequestHandler):
         return handler_input.response_builder.response
 
 # Interceptor classes
-class CacheResponseForRepeatInterceptor(AbstractResponseInterceptor):
-    """Cache the response sent to the user in session.
-    The interceptor is used to cache the handler response that is
-    being sent to the user. This can be used to repeat the response
-    back to the user, in case a RepeatIntent is being used and the
-    skill developer wants to repeat the same information back to
-    the user.
-    """
-    def process(self, handler_input, response):
-        # type: (HandlerInput, Response) -> None
-        session_attr = handler_input.attributes_manager.session_attributes
-        session_attr["recent_response"] = response
 
 
 # Exception Handler
@@ -192,19 +194,38 @@ class RepeatIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         logger.info("In RepeatIntentHandler")
-        attr = handler_input.attributes_manager.session_attributes
-        response_builder = handler_input.response_builder
-        if "recent_response" in attr:
-            cached_response_str = json.dumps(attr["recent_response"])
-            cached_response = DefaultSerializer().deserialize(
-                cached_response_str, Response)
-            return cached_response
-        else:
-            response_builder.speak(FALLBACK_MESSAGE).ask(HELP_MESSAGE)
 
-            return response_builder.response
+        # attributes = session['attributes']
+        # speech_output = attributes['speech_output']
+        # reprompt_text = attributes['reprompt_text']
+        # should_end_session = False
 
 
+        #language_prompts = handler_input.attributes_manager.request_attributes["_"]
+
+        session_attributes = handler_input.attributes_manager.session_attributes
+
+        #speech_output = session_attributes["repeat_speech_output"]
+        speech_output= session_attributes["trending"]
+
+        return (
+            handler_input.response_builder
+                .speak(speech_output)
+                .ask(speech_output)
+                .response
+            )
+
+
+# class RepeatInterceptor(AbstractResponseInterceptor):
+#
+#     def process(self, handler_input, response):
+#         logger.info("In RepeatInterceptor")
+#         session_attributes = handler_input.attributes_manager.session_attributes
+#         session_attributes["repeat_speech_output"] = response.output_speech.ssml.replace("<speak>","").replace("</speak>","")
+#         try:
+#             session_attributes["repeat_reprompt"] = response.reprompt.output_speech.ssml.replace("<speak>","").replace("</speak>","")
+#         except:
+#             session_attributes["repeat_reprompt"] = response.output_speech.ssml.replace("<speak>","").replace("</speak>","")
 
 
 # Register intent handlers
@@ -219,9 +240,12 @@ sb.add_request_handler(RepeatIntentHandler())
 sb.add_exception_handler(CatchAllExceptionHandler())
 
 # TODO: Uncomment the following lines of code for request, response logs.
-sb.add_global_response_interceptor(CacheResponseForRepeatInterceptor())
+
 sb.add_global_request_interceptor(RequestLogger())
 sb.add_global_response_interceptor(ResponseLogger())
+#sb.add_global_response_interceptor(RepeatInterceptor())
+
+
 
 # Handler name that is used on AWS lambda
 lambda_handler = sb.lambda_handler()

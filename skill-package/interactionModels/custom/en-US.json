@@ -21,7 +21,7 @@
         },
         {
           "name": "AMAZON.RepeatIntent",
-          "samples": []
+          "samples": ["repeat"]
         },
         {
           "name": "GetNewFactIntent",
