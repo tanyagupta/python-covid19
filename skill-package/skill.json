@@ -15,8 +15,8 @@
             "trends"
           ],
           "name": "Daily Trending Topics",
-          "smallIconUri": "https://raw.githubusercontent.com/tanyagupta/nytnewsflash/main/skill-package/assets/icon_108_A2Z.png",
-          "largeIconUri": "https://raw.githubusercontent.com/tanyagupta/nytnewsflash/main/skill-package/assets/icon_512_A2Z.png",
+          "smallIconUri": "https://raw.githubusercontent.com/tanyagupta/python-covid19/main/skill-package/assets/icon_108_A2Z.png",
+          "largeIconUri": "https://raw.githubusercontent.com/tanyagupta/python-covid19/main/skill-package/assets/icon_512_A2Z.png",
           "description": "Ask for trending topics, and get the latest trending topics.\n\nTo start, just say \"Alexa, open trending topics\" to get started\".\n\nAt anytime, you can stop by saying \"Alexa, stop\". The data is updated twice a day"
         }
       },
