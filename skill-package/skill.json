@@ -3,23 +3,25 @@
     "publishingInformation": {
       "locales": {
         "en-US": {
-          "summary": "Get the latest US data on COVID.",
+          "summary": "Get the latest trending topics.",
           "examplePhrases": [
-            "Alexa open COVID facts",
-            "Alexa ask COVID facts for a fact"
+            "Alexa open trending topics"
           ],
           "keywords": [
-            "COVID",
-            "facts"
+            "trending",
+            "facts",
+            "topics",
+            "Google trends",
+            "trends"
           ],
-          "name": "Daily US COVID data",
+          "name": "Daily Trending Topics",
           "smallIconUri": "https://raw.githubusercontent.com/tanyagupta/nytnewsflash/main/skill-package/assets/icon_108_A2Z.png",
           "largeIconUri": "https://raw.githubusercontent.com/tanyagupta/nytnewsflash/main/skill-package/assets/icon_512_A2Z.png",
-          "description": "Ask for COVID Facts, and get the latest data about COVID.\n\nTo start, just say \"Alexa, launch COVID Facts\" or \"Alexa, open COVID Facts\" to get a fact\".\n\nAt anytime, you can stop by saying \"Alexa, stop\". The data is sourced from The COVID Tracking Project at The Atlantic"
+          "description": "Ask for trending topics, and get the latest trending topics.\n\nTo start, just say \"Alexa, open trending topics\" to get started\".\n\nAt anytime, you can stop by saying \"Alexa, stop\". The data is updated twice a day"
         }
       },
       "isAvailableWorldwide": true,
-      "testingInstructions": "Start by saying Alexa open COVID facts",
+      "testingInstructions": "Start by saying Alexa open trending topics",
       "category": "KNOWLEDGE_AND_TRIVIA",
       "distributionCountries": []
     },
