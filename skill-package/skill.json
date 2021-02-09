@@ -28,7 +28,7 @@
     "apis": {
       "custom": {
         "endpoint": {
-          "uri": "arn:aws:lambda:us-east-1:975742344863:function:ask-python-covid-default-default-1611341996093"
+          "uri": "arn:aws:lambda:us-east-1:975742344863:function:ask-python-covid-default-default-1611341996093:PROD1"
         },
         "regions": {
           "EU": {
