@@ -23,12 +23,12 @@ from ask_sdk_model import Response
 # =========================================================================================================================================
 # TODO: The items below this comment need your attention.
 # =========================================================================================================================================
-SKILL_NAME = "Trending topics"
-GET_FACT_MESSAGE = "Here's your trending topic: "
-HELP_MESSAGE = "You can say tell me tell me about trendng topics, or, you can say exit... What can I help you with?"
+SKILL_NAME = "Trending terms"
+GET_FACT_MESSAGE = "Here are your trending terms: "
+HELP_MESSAGE = "You can say tell me tell me about trendng terms, or you can say repeat or you can say exit... What can I help you with?"
 HELP_REPROMPT = "What can I help you with?"
-STOP_MESSAGE = "Goodbye! Thank you for listening to trending topics by Learn in 60 seconds"
-FALLBACK_MESSAGE = "The Trending Topics skill can't help you with that.  It can help you discover trending topics if you say tell me about trending topics. What can I help you with?"
+STOP_MESSAGE = "Goodbye! Thank you for listening to trending terms by Learn in 60 seconds"
+FALLBACK_MESSAGE = "The Trending terms skill can't help you with that.  It can help you discover trending terms if you say tell me about trending terms. What can I help you with?"
 FALLBACK_REPROMPT = 'What can I help you with?'
 EXCEPTION_MESSAGE = "Sorry. I cannot help you with that."
 
@@ -60,7 +60,7 @@ class GetNewFactHandler(AbstractRequestHandler):
         trending_data=requests.get(url)
         trend_list = json.loads(trending_data.text)
 
-        response="The trending topics are "
+        response="The trending terms are "
         for item in trend_list:
             response=response+str(item[0])+"<break time='1s'/>"+", "
 
@@ -71,12 +71,8 @@ class GetNewFactHandler(AbstractRequestHandler):
 
         session_attributes["trending"]=response
 
-
-
-        reprompt="hello?"
-
         handler_input.response_builder.speak(response).set_card(
-            SimpleCard(SKILL_NAME, display)).ask(reprompt)
+            SimpleCard(SKILL_NAME, display)).ask(HELP_MESSAGE) # .ask keeps the session open and the value is used only if the user does not say anything//The ask method on the ResponseFactory object sets the reprompt speech and sets shouldEndSession to false. This instructs Alexa to listen for the user's response.
         return handler_input.response_builder.response
 
 

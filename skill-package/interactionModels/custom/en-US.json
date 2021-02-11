@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "trending topics",
+      "invocationName": "trending terms",
       "intents": [
         {
           "name": "AMAZON.CancelIntent",
@@ -27,7 +27,7 @@
           "name": "GetNewFactIntent",
           "samples": [
             "give me trending facts",
-            "give me trending topics"
+            "give me trending terms"
           ],
           "slots": []
         }
