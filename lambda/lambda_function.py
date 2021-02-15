@@ -31,6 +31,7 @@ STOP_MESSAGE = "Goodbye! Thank you for listening to trending terms by Learn in 6
 FALLBACK_MESSAGE = "The Trending terms skill can't help you with that.  It can help you discover trending terms if you say tell me about trending terms. What can I help you with?"
 FALLBACK_REPROMPT = 'What can I help you with?'
 EXCEPTION_MESSAGE = "Sorry. I cannot help you with that."
+REPEAT_MESSAGE = "Would you like me to repeat the terms?"
 
 
 sb = SkillBuilder()
@@ -60,8 +61,10 @@ class GetNewFactHandler(AbstractRequestHandler):
         trending_data=requests.get(url)
         trend_list = json.loads(trending_data.text)
 
+
         response="The trending terms are "
         for item in trend_list:
+        #for item in range(0,length-2):
             response=response+str(item[0])+"<break time='1s'/>"+", "
 
 
@@ -71,8 +74,10 @@ class GetNewFactHandler(AbstractRequestHandler):
 
         session_attributes["trending"]=response
 
-        handler_input.response_builder.speak(response).set_card(
-            SimpleCard(SKILL_NAME, display)).ask(HELP_MESSAGE) # .ask keeps the session open and the value is used only if the user does not say anything//The ask method on the ResponseFactory object sets the reprompt speech and sets shouldEndSession to false. This instructs Alexa to listen for the user's response.
+        handler_input.response_builder.speak(response+REPEAT_MESSAGE).set_card(
+            SimpleCard(SKILL_NAME, display)).ask(HELP_MESSAGE)
+            # .ask keeps the session open and the value is used only if the user does not say anything
+            # The ask method on the ResponseFactory object sets the reprompt speech and sets shouldEndSession to false. This instructs Alexa to listen for the user's response.
         return handler_input.response_builder.response
 
 
@@ -96,8 +101,9 @@ class CancelOrStopIntentHandler(AbstractRequestHandler):
     """Single handler for Cancel and Stop Intent."""
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
-        return (is_intent_name("AMAZON.CancelIntent")(handler_input) or
-                is_intent_name("AMAZON.StopIntent")(handler_input))
+        return (is_intent_name("AMAZON.CancelIntent")(handler_input) or is_intent_name("AMAZON.StopIntent")(handler_input) or is_intent_name("AMAZON.NoIntent")(handler_input))
+
+
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
@@ -181,11 +187,14 @@ class ResponseLogger(AbstractResponseInterceptor):
         logger.debug("Alexa Response: {}".format(response))
 
 
+# return (is_request_type("LaunchRequest")(handler_input) or
+#        is_intent_name("GetNewFactIntent")(handler_input))
+
 class RepeatIntentHandler(AbstractRequestHandler):
     """Handler for Repeat Intent."""
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
-        return is_intent_name("AMAZON.RepeatIntent")(handler_input)
+        return is_intent_name("AMAZON.RepeatIntent")(handler_input) or is_intent_name("AMAZON.YesIntent")(handler_input)
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
@@ -206,8 +215,8 @@ class RepeatIntentHandler(AbstractRequestHandler):
 
         return (
             handler_input.response_builder
-                .speak(speech_output)
-                .ask(speech_output)
+                .speak(speech_output+REPEAT_MESSAGE)
+                .ask(HELP_MESSAGE)
                 .response
             )
 
