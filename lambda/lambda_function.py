@@ -25,10 +25,10 @@ from ask_sdk_model import Response
 # =========================================================================================================================================
 SKILL_NAME = "Trending terms"
 GET_FACT_MESSAGE = "Here are your trending terms: "
-HELP_MESSAGE = "You can say tell me tell me about trendng terms, or you can say repeat or you can say exit... What can I help you with?"
+HELP_MESSAGE = "You can say give me trending terms, or you can say repeat or you can say stop... What can I help you with?"
 HELP_REPROMPT = "What can I help you with?"
 STOP_MESSAGE = "Goodbye! Thank you for listening to trending terms by Learn in 60 seconds"
-FALLBACK_MESSAGE = "The Trending terms skill can't help you with that.  It can help you discover trending terms if you say tell me about trending terms. What can I help you with?"
+FALLBACK_MESSAGE = "The trending terms skill can't help you with that.  It can help you discover trending terms if you say tell me about trending terms. What can I help you with?"
 FALLBACK_REPROMPT = 'What can I help you with?'
 EXCEPTION_MESSAGE = "Sorry. I cannot help you with that."
 REPEAT_MESSAGE = "Would you like me to repeat the terms?"

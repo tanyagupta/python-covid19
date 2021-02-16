@@ -28,7 +28,7 @@
     "apis": {
       "custom": {
         "endpoint": {
-          "uri": "arn:aws:lambda:us-east-1:975742344863:function:ask-unofficialgoogletrendi-default-default-1613059061930"
+          "uri": "arn:aws:lambda:us-east-1:975742344863:function:ask-unofficialgoogletrendi-default-default-1613059061930:V1"
         }
       }
     },

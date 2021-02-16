@@ -34,7 +34,7 @@
         {
           "name": "GetNewFactIntent",
           "samples": [
-            "give me trending facts",
+            "give me trending topics",
             "give me trending terms"
           ],
           "slots": []
